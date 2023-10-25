@@ -141,10 +141,12 @@ Alternatively, refer to the [developer instructions](#developer-instructions) fo
                                          --playlist-items 1-3,7,10-13", it will
                                          download the videos at index 1, 2, 3,
                                          7, 10, 11, 12 and 13.
-    --match-title REGEX                  Download only matching titles (regex or
-                                         caseless sub-string)
+    --match-title REGEX                  Download only matching titles (case-
+                                         insensitive regex or alphanumeric sub-
+                                         string)
     --reject-title REGEX                 Skip download for matching titles
-                                         (regex or caseless sub-string)
+                                         (case-insensitive regex or alphanumeric
+                                         sub-string)
     --max-downloads NUMBER               Abort after downloading NUMBER files
     --min-filesize SIZE                  Do not download any videos smaller than
                                          SIZE (e.g. 50k or 44.6m)
@@ -234,8 +236,8 @@ Alternatively, refer to the [developer instructions](#developer-instructions) fo
                                          while downloading (some players may not
                                          be able to play it)
     --external-downloader COMMAND        Use the specified external downloader.
-                                         Currently supports aria2c,avconv,axel,c
-                                         url,ffmpeg,httpie,wget
+                                         Currently supports aria2c,aria2p,avconv
+                                         ,axel,curl,ffmpeg,httpie,wget
     --external-downloader-args ARGS      Give these arguments to the external
                                          downloader
 
@@ -263,6 +265,8 @@ Alternatively, refer to the [developer instructions](#developer-instructions) fo
                                          files (restart from beginning)
     --no-part                            Do not use .part files - write directly
                                          into output file
+    --mtime                              Use the Last-modified header to set the
+                                         file modification time (default)
     --no-mtime                           Do not use the Last-modified header to
                                          set the file modification time
     --write-description                  Write video description to a
@@ -344,12 +348,17 @@ Alternatively, refer to the [developer instructions](#developer-instructions) fo
                                          retrieve information about the video.
                                          (Currently supported only for YouTube)
     --user-agent UA                      Specify a custom user agent
-    --referer URL                        Specify a custom referer, use if the
+    --referer URL                        Specify a custom Referer: use if the
                                          video access is restricted to one
                                          domain
     --add-header FIELD:VALUE             Specify a custom HTTP header and its
                                          value, separated by a colon ':'. You
-                                         can use this option multiple times
+                                         can use this option multiple times. NB
+                                         Use --cookies rather than adding a
+                                         Cookie header if its contents may be
+                                         sensitive; data from a Cookie header
+                                         will be sent to all domains, not just
+                                         the one intended
     --bidi-workaround                    Work around terminals that lack
                                          bidirectional text support. Requires
                                          bidiv or fribidi executable in PATH
@@ -432,7 +441,8 @@ Alternatively, refer to the [developer instructions](#developer-instructions) fo
                                          necessary (currently supported:
                                          mp4|flv|ogg|webm|mkv|avi)
     --postprocessor-args ARGS            Give these arguments to the
-                                         postprocessor
+                                         postprocessor (if postprocessing is
+                                         required)
     -k, --keep-video                     Keep the video file on disk after the
                                          post-processing; the video is erased by
                                          default
