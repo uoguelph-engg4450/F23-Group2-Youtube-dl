@@ -43,10 +43,41 @@ class CTVNewsIE(InfoExtractor):
     }, {
         'url': 'http://vancouverisland.ctvnews.ca/video?clipId=761241',
         'only_matching': True,
-    }]
+    },
+    
+    #Newly added tests
+    #Testcase for CTV news Male lost at sea
+    {
+        'url': 'https://vancouverisland.ctvnews.ca/video?clipId=761241',
+        'info_dict': {
+            'title': 'Male lost at sea',
+        },
+        'only_matching': True,
+    },
+    #Testcase for CTV news fireworks on highway
+    {
+        'url': 'https://vancouverisland.ctvnews.ca/video?clipId=761241#2795499',
+        'only_matching': True,
+    },
+
+    
+    #Was going to add this test case, but did not work, Added two working ones above
+    # {
+    #     'url': 'https://www.ctvnews.ca/video?clipId=901995'
+    #     'info_dict':
+    #     {
+    #         'id': '',
+    #     },
+    #     'playlist_mincount': ,
+    # },
+
+    ]
 
     def _real_extract(self, url):
         page_id = self._match_id(url)
+
+        #Newly added code to Printing video ID
+        print('VideoID:\n'+ page_id)
 
         def ninecninemedia_url_result(clip_id):
             return {
