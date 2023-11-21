@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import time
 
 
@@ -9,22 +9,38 @@ class DownloadDelay:
         self.target_time = target_time
 
     # formats the time given by user from HH:MM into a datetime object
-    def text_to_datetime(self, time):
+    def text_to_time(self, time):
         if time is not None:
-            time_object = datetime.strptime(time, '%H:%M')  # formats time, this will go into class later
-            return time_object
+            time_object = datetime.strptime(time, '%H:%M')
+            return time_object.time()
         else:
             return None
 
-    def schedule_delay(self):
-        print(self.current_time)
-        print(self.target_time)
-        if self.current_time < self.target_time:
-            hourToWait = abs(self.target_time.hour - self.current_time.hour)
-            minsToWait = abs(self.target_time.minute - self.current_time.minute)
-            secsToWait = abs(self.target_time.second - self.current_time.second)
-            totalWaitTime = round((hourToWait * 60) + minsToWait + (secsToWait / 60))
-            print("Program delayed by " + str(totalWaitTime) + " minutes")
-            time.sleep(totalWaitTime)
+    # calculates total wait time between the times given in the 24hr time format
+    def get_total_wait_time(self, time1, time2):
+
+        if time1 < time2:
+            hoursToWait = abs(time2.hour - time1.hour)
+            minsToWait = abs(time2.minute - time1.minute)
+            secsToWait = abs(time2.second - time1.second)
+
+        # if target time is less than current time, target is assumed to be for the next day
+        elif time1 > time2:
+            hoursToWait = abs((time2.hour + 24) - time1.hour)
+            minsToWait = abs(time2.minute - time1.minute)
+            secsToWait = abs(time2.second - time1.second)
+
         else:
-            # cont here
+            print("Time given is the same as the as current time, no delay will be applied")
+            hoursToWait = 0
+            minsToWait = 0
+            secsToWait = 0
+
+        totalWaitTime = round((hoursToWait * 60) + minsToWait + (secsToWait / 60))
+        return totalWaitTime
+    
+    def schedule_delay(self):
+        totalWaitTime = self.get_total_wait_time(self.current_time, self.target_time)
+        print("The download has been scheduled, video download will resume at " + str(self.target_time))
+        print("Please leave the program running")
+        time.sleep(totalWaitTime)
