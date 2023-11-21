@@ -2,6 +2,9 @@
 # coding: utf-8
 
 from __future__ import unicode_literals
+from datetime import datetime
+import time
+from zoneinfo import ZoneInfo
 
 __license__ = 'Public Domain'
 
@@ -44,6 +47,13 @@ from .extractor import gen_extractors, list_extractors
 from .extractor.adobepass import MSO_INFO
 from .YoutubeDL import YoutubeDL
 
+#formats the time given by user from HH:MM into useable information
+def text_to_datetime(time):
+    if time is not None:
+        time_object = datetime.strptime(time, '%H:%M')
+        return time_object
+    else: 
+        return None
 
 def _real_main(argv=None):
     # Compatibility fix for Windows
@@ -172,6 +182,16 @@ def _real_main(argv=None):
         opts.max_sleep_interval = opts.sleep_interval
     if opts.ap_mso and opts.ap_mso not in MSO_INFO:
         parser.error('Unsupported TV Provider, use --ap-list-mso to get a list of supported TV Providers')
+    
+    #pauses program 
+    if opts.delay_time is not None:
+        print(datetime.now())
+        print(text_to_datetime(opts.delay_time))
+        if datetime.now() > text_to_datetime(opts.delay_time):
+            print("Program delayed")
+            hoursToWait = datetime.now() - text_to_datetime(opts.delay_time)
+            print(hoursToWait)
+            time.sleep(10)
 
     def parse_retries(retries):
         if retries in ('inf', 'infinite'):
