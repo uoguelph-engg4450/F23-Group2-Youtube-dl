@@ -56,6 +56,13 @@ def _real_main(argv=None):
     setproctitle('youtube-dl')
 
     parser, opts, args = parseOpts(argv)
+    # pauses program, delay time is integer type if option is not chosen
+    if opts.delay_time is not None and isinstance(opts.delay_time, str):
+        time_delay_obj = DownloadDelay(None, None)
+        current_time = datetime.now().time()
+        target_time = time_delay_obj.text_to_time(opts.delay_time)
+        time_delay_obj = DownloadDelay(current_time, target_time)
+        time_delay_obj.schedule_delay()
 
     # pauses program
     if opts.delay_time is not None:

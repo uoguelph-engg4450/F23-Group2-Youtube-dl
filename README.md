@@ -238,6 +238,8 @@ Alternatively, refer to the [developer instructions](#developer-instructions) fo
                                          url,ffmpeg,httpie,wget
     --external-downloader-args ARGS      Give these arguments to the external
                                          downloader
+    --delay-download                     Set a download time, input must be in
+                                         the "HH:MM" format in 24 hour time
 
 ## Filesystem Options:
     -a, --batch-file FILE                File containing URLs to download ('-'
