@@ -3,7 +3,7 @@
 
 from __future__ import unicode_literals
 from datetime import datetime
-from download_delay import DownloadDelay
+from .download_delay import DownloadDelay
 
 __license__ = 'Public Domain'
 
