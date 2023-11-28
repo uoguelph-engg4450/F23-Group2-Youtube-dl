@@ -2,6 +2,8 @@
 # coding: utf-8
 
 from __future__ import unicode_literals
+from datetime import datetime
+from download_delay import DownloadDelay
 
 __license__ = 'Public Domain'
 
@@ -54,6 +56,13 @@ def _real_main(argv=None):
     setproctitle('youtube-dl')
 
     parser, opts, args = parseOpts(argv)
+    # pauses program, delay time is integer type if option is not chosen
+    if opts.delay_time is not None and isinstance(opts.delay_time, str):
+        time_delay_obj = DownloadDelay(None, None)
+        current_time = datetime.now().time()
+        target_time = time_delay_obj.text_to_time(opts.delay_time)
+        time_delay_obj = DownloadDelay(current_time, target_time)
+        time_delay_obj.schedule_delay()
 
     # Set user agent
     if opts.user_agent is not None:
@@ -171,7 +180,7 @@ def _real_main(argv=None):
     else:
         opts.max_sleep_interval = opts.sleep_interval
     if opts.ap_mso and opts.ap_mso not in MSO_INFO:
-        parser.error('Unsupported TV Provider, use --ap-list-mso to get a list of supported TV Providers')
+        parser.error('Unsupported TV Provider, use --ap-list-mso to get a list of supported TV Providers') 
 
     def parse_retries(retries):
         if retries in ('inf', 'infinite'):

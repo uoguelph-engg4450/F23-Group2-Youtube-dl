@@ -523,6 +523,14 @@ def parseOpts(overrideArguments=None):
         '--external-downloader-args',
         dest='external_downloader_args', metavar='ARGS',
         help='Give these arguments to the external downloader')
+    downloader.add_option(
+        '--delay-download',
+        action='store',
+        dest='delay_time',
+        type='string',
+        default=0,
+        help='Delay the start of the dowload until the specified time of the day')
+
 
     workarounds = optparse.OptionGroup(parser, 'Workarounds')
     workarounds.add_option(
